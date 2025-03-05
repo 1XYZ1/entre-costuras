@@ -41,6 +41,11 @@ const mobileButtonStyles = `
     backdrop-filter: blur(10px);
   }
 
+  .gallery-caption {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    backdrop-filter: blur(5px);
+  }
+
   .gallery-image-container {
     display: flex;
     align-items: center;
@@ -291,7 +296,7 @@ export function Gallery() {
                   className="absolute top-4 right-4 z-50"
                 >
                   <Button
-                    className="rounded-full w-10 h-10 bg-black/40 text-white/80 border-none backdrop-blur-md transition-all duration-300 nav-button-fix desktop-hover gallery-nav-button"
+                    className="rounded-full w-10 h-10 bg-black/40 text-white/80 border-none backdrop-blur-md transition-all duration-300 nav-button-fix desktop-hover"
                     onClick={(e) => {
                       setSelectedImageIndex(null);
                       // Quitar el foco del botón después del clic
@@ -312,11 +317,12 @@ export function Gallery() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 0.7, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.2 }}
-                    className="absolute text-white/90 text-xs px-3 py-1 rounded-full z-50 bg-black/30 backdrop-blur-sm"
+                    className="absolute text-white/90 text-xs px-3 py-1 rounded-full z-50"
                     style={{
                       top: "1.5rem",
                       left: "50%",
                       transform: "translateX(-50%)",
+                      backgroundColor: "transparent",
                     }}
                   >
                     Desliza para navegar
@@ -332,7 +338,7 @@ export function Gallery() {
                     className="pointer-events-auto"
                   >
                     <Button
-                      className={`ml-2 md:ml-4 rounded-full w-10 h-10 md:w-12 md:h-12 bg-black/40 text-white/80 border-none backdrop-blur-md transition-all duration-300 nav-button-fix desktop-hover gallery-nav-button ${
+                      className={`ml-2 md:ml-4 rounded-full w-10 h-10 md:w-12 md:h-12 bg-black/40 text-white/80 border-none backdrop-blur-md transition-all duration-300 nav-button-fix desktop-hover ${
                         isMobile ? "opacity-60" : ""
                       }`}
                       onClick={(e) => {
@@ -357,7 +363,7 @@ export function Gallery() {
                     className="pointer-events-auto"
                   >
                     <Button
-                      className={`mr-2 md:mr-4 rounded-full w-10 h-10 md:w-12 md:h-12 bg-black/40 text-white/80 border-none backdrop-blur-md transition-all duration-300 nav-button-fix desktop-hover gallery-nav-button ${
+                      className={`mr-2 md:mr-4 rounded-full w-10 h-10 md:w-12 md:h-12 bg-black/40 text-white/80 border-none backdrop-blur-md transition-all duration-300 nav-button-fix desktop-hover ${
                         isMobile ? "opacity-60" : ""
                       }`}
                       onClick={(e) => {
@@ -381,9 +387,9 @@ export function Gallery() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.2 }}
-                  className="absolute bottom-0 left-0 right-0 text-center text-white py-3 px-4 gallery-caption z-50"
+                  className="absolute bottom-0 left-0 right-0 text-center text-white py-3 px-4 unified-caption gallery-caption z-50"
                 >
-                  <p className="drop-shadow-md font-medium">
+                  <p className="text-sm md:text-base font-medium drop-shadow-md">
                     {galleryImages[currentIndex].alt}
                   </p>
                   <div className="flex items-center justify-center gap-2 mt-1">
@@ -399,7 +405,7 @@ export function Gallery() {
                         transition={{ duration: 0.3 }}
                       />
                     </div>
-                    <p className="text-xs text-white/90 drop-shadow-md">{`${
+                    <p className="text-xs text-white/80 drop-shadow-md">{`${
                       currentIndex + 1
                     } de ${galleryImages.length}`}</p>
                   </div>
