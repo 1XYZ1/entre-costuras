@@ -277,3 +277,101 @@ html {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   background: #475569;
 }
+
+/* Estilos para Embla Carousel en la galería */
+.embla {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.embla__container {
+  display: flex;
+  height: 100%;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos para el modal de la galería en móvil */
+@media (max-width: 768px) {
+  .gallery-modal {
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .gallery-image-container {
+    max-width: 100% !important;
+    max-height: 85vh !important;
+    padding: 0 !important;
+  }
+
+  .gallery-caption {
+    padding-bottom: env(safe-area-inset-bottom, 10px) !important;
+  }
+}
+
+/* Estilos para la leyenda de la galería */
+.gallery-caption {
+  background: none;
+  padding: 1.5rem 1rem 1rem;
+  transition: opacity 0.3s ease;
+  position: relative;
+}
+
+/* Efecto sutil para mejorar la legibilidad sin fondo visible */
+.gallery-caption::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 100%);
+  opacity: 0.6;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.gallery-caption p:first-child {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.01em;
+}
+
+@media (min-width: 768px) {
+  .gallery-caption p:first-child {
+    font-size: 1.25rem;
+  }
+}
+
+/* Mejoras adicionales para la galería */
+.gallery-modal {
+  background-color: rgba(0, 0, 0, 0.95);
+}
+
+.embla__slide {
+  transition: opacity 0.3s ease;
+}
+
+/* Mejoras para la navegación de la galería */
+.gallery-nav-button {
+  transition: all 0.2s ease;
+}
+
+.gallery-nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}

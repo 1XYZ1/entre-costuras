@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -10,13 +10,22 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { Scissors } from "lucide-react";
+import { Scissors, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { name: "Inicio", path: "/" },
   { name: "Nosotros", path: "/#nosotros" },
-  { name: "Servicios", path: "/#servicios" },
+  {
+    name: "Servicios",
+    path: "/#servicios",
+    submenu: [
+      { name: "Confección a medida", path: "/servicios/confeccion-a-medida" },
+      { name: "Arreglos y ajustes", path: "/servicios/arreglos-y-ajustes" },
+      { name: "Diseño personalizado", path: "/servicios/diseno-de-patrones" },
+      { name: "Diseño de imagen", path: "/servicios/asesoria-de-imagen" },
+    ],
+  },
   { name: "Galería", path: "/#gallery" },
   { name: "Testimonios", path: "/#testimonios" },
   { name: "Contacto", path: "/#contacto" },
@@ -26,6 +35,24 @@ export function MainNav() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const submenuRef = useRef<HTMLDivElement>(null);
+
+  // Cerrar el submenú al hacer clic fuera de él
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        submenuRef.current &&
+        !submenuRef.current.contains(event.target as Node)
+      ) {
+        setOpenSubmenu(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Prevenir scroll cuando el menú móvil está abierto
   useEffect(() => {
@@ -60,6 +87,10 @@ export function MainNav() {
         window.location.href = `/#${sectionId}`;
       }
     }
+  };
+
+  const toggleSubmenu = (name: string) => {
+    setOpenSubmenu(openSubmenu === name ? null : name);
   };
 
   return (
@@ -104,24 +135,71 @@ export function MainNav() {
                   key={index}
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 300 }}
+                  className="relative"
+                  ref={item.name === "Servicios" ? submenuRef : null}
                 >
-                  <Link
-                    href={item.path}
-                    className={`transition-colors hover:text-primary relative group px-1 py-1 ${
-                      isScrolled || !isHomePage
-                        ? "text-foreground"
-                        : "text-white"
-                    }`}
-                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                      if (isHomePage && item.path.startsWith("/#")) {
-                        e.preventDefault();
-                        scrollToSection(item.path.replace("/#", ""));
-                      }
-                    }}
-                  >
-                    {item.name}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                  </Link>
+                  {item.submenu ? (
+                    <div className="relative">
+                      <button
+                        className={`flex items-center transition-colors hover:text-primary relative group px-1 py-1 ${
+                          isScrolled || !isHomePage
+                            ? "text-foreground"
+                            : "text-white"
+                        }`}
+                        onClick={() => toggleSubmenu(item.name)}
+                      >
+                        {item.name}
+                        <ChevronDown
+                          className={`ml-1 h-4 w-4 transition-transform duration-200 ${
+                            openSubmenu === item.name ? "rotate-180" : ""
+                          }`}
+                        />
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                      </button>
+                      <AnimatePresence>
+                        {openSubmenu === item.name && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10, height: 0 }}
+                            animate={{ opacity: 1, y: 0, height: "auto" }}
+                            exit={{ opacity: 0, y: 10, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-hidden z-50"
+                          >
+                            <div className="py-1">
+                              {item.submenu.map((subItem, subIndex) => (
+                                <Link
+                                  key={subIndex}
+                                  href={subItem.path}
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors duration-200"
+                                  onClick={() => setOpenSubmenu(null)}
+                                >
+                                  {subItem.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.path}
+                      className={`transition-colors hover:text-primary relative group px-1 py-1 ${
+                        isScrolled || !isHomePage
+                          ? "text-foreground"
+                          : "text-white"
+                      }`}
+                      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                        if (isHomePage && item.path.startsWith("/#")) {
+                          e.preventDefault();
+                          scrollToSection(item.path.replace("/#", ""));
+                        }
+                      }}
+                    >
+                      {item.name}
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                  )}
                 </motion.div>
               ))}
             </div>
@@ -201,13 +279,51 @@ export function MainNav() {
                       exit={{ opacity: 0, x: 10 }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <MobileLink
-                        href={navItem.path}
-                        onOpenChange={() => setIsOpen(false)}
-                        className="text-foreground text-lg font-medium hover:text-primary transition-colors py-2 block"
-                      >
-                        {navItem.name}
-                      </MobileLink>
+                      {navItem.submenu ? (
+                        <div>
+                          <button
+                            onClick={() => toggleSubmenu(navItem.name)}
+                            className="text-foreground text-lg font-medium hover:text-primary transition-colors py-2 flex items-center justify-between w-full"
+                          >
+                            {navItem.name}
+                            <ChevronDown
+                              className={`ml-1 h-5 w-5 transition-transform duration-200 ${
+                                openSubmenu === navItem.name ? "rotate-180" : ""
+                              }`}
+                            />
+                          </button>
+                          <AnimatePresence>
+                            {openSubmenu === navItem.name && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="ml-4 mt-2 border-l-2 border-gray-200 pl-4"
+                              >
+                                {navItem.submenu.map((subItem, subIndex) => (
+                                  <MobileLink
+                                    key={subIndex}
+                                    href={subItem.path}
+                                    onOpenChange={() => setIsOpen(false)}
+                                    className="text-muted-foreground text-base hover:text-primary transition-colors py-2 block"
+                                  >
+                                    {subItem.name}
+                                  </MobileLink>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <MobileLink
+                          href={navItem.path}
+                          onOpenChange={() => setIsOpen(false)}
+                          className="text-foreground text-lg font-medium hover:text-primary transition-colors py-2 block"
+                        >
+                          {navItem.name}
+                        </MobileLink>
+                      )}
                     </motion.div>
                   ))}
                 </AnimatePresence>
