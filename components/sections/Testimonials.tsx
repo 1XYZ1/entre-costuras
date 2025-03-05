@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 const testimonials = [
   {
@@ -15,19 +15,19 @@ const testimonials = [
     name: "Laura Martínez",
     text: "Las clases de costura fueron una experiencia maravillosa. Aprendí mucho y ahora puedo hacer mis propios proyectos. La paciencia y conocimiento de los instructores es excepcional.",
   },
-]
+];
 
 export function Testimonials() {
   return (
     <section id="testimonios" className="py-16 md:py-24">
-      <div className="container">
+      <div className="container-content">
         <div className="mx-auto max-w-[800px] text-center">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
             Lo que dicen nuestros clientes
           </h2>
           <p className="mt-4 text-muted-foreground">
-            La satisfacción de nuestros clientes es nuestra mayor recompensa. Conoce las experiencias de quienes ya han
-            confiado en nosotros.
+            La satisfacción de nuestros clientes es nuestra mayor recompensa.
+            Conoce las experiencias de quienes ya han confiado en nosotros.
           </p>
         </div>
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -42,7 +42,9 @@ export function Testimonials() {
             >
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-primary font-bold">{testimonial.name.charAt(0)}</span>
+                  <span className="text-primary font-bold">
+                    {testimonial.name.charAt(0)}
+                  </span>
                 </div>
                 <div>
                   <h4 className="font-bold">{testimonial.name}</h4>
@@ -59,6 +61,5 @@ export function Testimonials() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

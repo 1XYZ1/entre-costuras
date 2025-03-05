@@ -1,16 +1,18 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 export function Location() {
   return (
     <section id="ubicacion" className="py-16 md:py-24 bg-muted/30">
-      <div className="container">
+      <div className="container-content">
         <div className="mx-auto max-w-[800px] text-center mb-12">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Nuestra Ubicación</h2>
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            Nuestra Ubicación
+          </h2>
           <p className="mt-4 text-muted-foreground">
-            Visítanos en nuestro taller. Estamos ubicados en el corazón de la ciudad, listos para atenderte y hacer
-            realidad tus ideas de moda.
+            Visítanos en nuestro taller. Estamos ubicados en el corazón de la
+            ciudad, listos para atenderte y hacer realidad tus ideas de moda.
           </p>
         </div>
         <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -49,6 +51,5 @@ export function Location() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

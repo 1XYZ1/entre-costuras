@@ -1,17 +1,19 @@
-import { Button } from "@/components/ui/button"
-import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
+import Link from "next/link";
 
 export function Contact() {
   return (
     <section id="contacto" className="bg-muted/50 py-16 md:py-24">
-      <div className="container">
+      <div className="container-content">
         <div className="grid gap-12 md:grid-cols-2">
           <div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Contáctanos</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+              Contáctanos
+            </h2>
             <p className="mt-4 text-muted-foreground">
-              Estamos aquí para ayudarte con cualquier consulta o proyecto que tengas en mente. No dudes en ponerte en
-              contacto con nosotros.
+              Estamos aquí para ayudarte con cualquier consulta o proyecto que
+              tengas en mente. No dudes en ponerte en contacto con nosotros.
             </p>
             <div className="mt-8 space-y-4">
               <div className="flex items-center gap-3">
@@ -34,12 +36,20 @@ export function Contact() {
               </div>
             </div>
             <div className="mt-8">
-              <h3 className="text-lg font-bold mb-4">Síguenos en redes sociales</h3>
+              <h3 className="text-lg font-bold mb-4">
+                Síguenos en redes sociales
+              </h3>
               <div className="flex gap-4">
-                <Link href="#" className="rounded-full bg-primary/10 p-3 hover:bg-primary/20 transition-colors">
+                <Link
+                  href="#"
+                  className="rounded-full bg-primary/10 p-3 hover:bg-primary/20 transition-colors"
+                >
                   <Instagram className="h-5 w-5 text-primary" />
                 </Link>
-                <Link href="#" className="rounded-full bg-primary/10 p-3 hover:bg-primary/20 transition-colors">
+                <Link
+                  href="#"
+                  className="rounded-full bg-primary/10 p-3 hover:bg-primary/20 transition-colors"
+                >
                   <Facebook className="h-5 w-5 text-primary" />
                 </Link>
               </div>
@@ -97,6 +107,5 @@ export function Contact() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
