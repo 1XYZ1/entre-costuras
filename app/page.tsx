@@ -5,8 +5,8 @@ import { Hero } from "@/components/sections/Hero";
 import { AboutUs } from "@/components/sections/AboutUs";
 import { Services } from "@/components/sections/Services";
 
-const Gallery = dynamic(
-  () => import("@/components/sections/Gallery").then((mod) => mod.Gallery),
+const Proyectos = dynamic(
+  () => import("@/components/sections/Projects").then((mod) => mod.Proyectos),
   { ssr: false }
 );
 const Testimonials = dynamic(
@@ -54,8 +54,8 @@ export default function Home() {
         <Hero />
         <AboutUs />
         <Services />
-        <Suspense fallback={<div>Cargando galería...</div>}>
-          <Gallery />
+        <Suspense fallback={<div>Cargando proyectos...</div>}>
+          <Proyectos />
         </Suspense>
         <Suspense fallback={<div>Cargando testimonios...</div>}>
           <Testimonials />

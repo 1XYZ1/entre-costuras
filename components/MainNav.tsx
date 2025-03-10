@@ -10,24 +10,54 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { Scissors, ChevronDown } from "lucide-react";
+import { Scissors, ChevronDown, Building, User, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
-const navItems = [
+interface SubMenuItem {
+  name: string;
+  path: string;
+  code: string;
+  description: string;
+  gifUrl: string;
+  isPrimary?: boolean;
+}
+
+interface NavItem {
+  name: string;
+  path: string;
+  submenu?: SubMenuItem[];
+}
+
+const navItems: NavItem[] = [
   { name: "Inicio", path: "/" },
   { name: "Nosotros", path: "/#nosotros" },
   {
-    name: "Servicios",
-    path: "/#servicios",
+    name: "Soluciones",
+    path: "/soluciones",
     submenu: [
-      { name: "Confección a medida", path: "/servicios/confeccion-a-medida" },
-      { name: "Arreglos y ajustes", path: "/servicios/arreglos-y-ajustes" },
-      { name: "Diseño personalizado", path: "/servicios/diseno-de-patrones" },
-      { name: "Diseño de imagen", path: "/servicios/asesoria-de-imagen" },
+      {
+        name: "Empresas",
+        path: "/servicios/empresas",
+        code: "B2B",
+        description:
+          "Soluciones a medida para negocios: uniformes, producción a escala y consultoría textil",
+        gifUrl: "/images/b2b-services.gif",
+        isPrimary: true,
+      },
+      {
+        name: "Personal",
+        path: "/servicios/personal",
+        code: "B2C",
+        description:
+          "Servicios de confección, arreglos y asesoría para clientes individuales",
+        gifUrl: "/images/b2c-services.gif",
+      },
     ],
   },
-  { name: "Galería", path: "/#gallery" },
+  { name: "Proyectos", path: "/#proyectos" },
   { name: "Testimonios", path: "/#testimonios" },
+  { name: "Blog", path: "/blog" },
   { name: "Contacto", path: "/#contacto" },
 ];
 
@@ -136,7 +166,7 @@ export function MainNav() {
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 300 }}
                   className="relative"
-                  ref={item.name === "Servicios" ? submenuRef : null}
+                  ref={item.submenu ? submenuRef : null}
                 >
                   {item.submenu ? (
                     <div className="relative">
@@ -159,21 +189,78 @@ export function MainNav() {
                       <AnimatePresence>
                         {openSubmenu === item.name && (
                           <motion.div
-                            initial={{ opacity: 0, y: 10, height: 0 }}
-                            animate={{ opacity: 1, y: 0, height: "auto" }}
-                            exit={{ opacity: 0, y: 10, height: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-hidden z-50"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.3 }}
+                            className="absolute left-1/2 -translate-x-1/2 mt-4 w-[600px] rounded-lg shadow-lg bg-white/95 backdrop-blur-sm ring-1 ring-black/5 overflow-hidden z-50"
                           >
-                            <div className="py-1">
+                            <button
+                              onClick={() => setOpenSubmenu(null)}
+                              className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                            >
+                              <X className="h-4 w-4 text-gray-500" />
+                            </button>
+
+                            <div className="grid grid-cols-2 gap-0">
                               {item.submenu.map((subItem, subIndex) => (
                                 <Link
                                   key={subIndex}
                                   href={subItem.path}
-                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors duration-200"
                                   onClick={() => setOpenSubmenu(null)}
+                                  className={`relative overflow-hidden group transition-all duration-300 ${
+                                    subItem.isPrimary
+                                      ? "border-r border-gray-100"
+                                      : ""
+                                  }`}
                                 >
-                                  {subItem.name}
+                                  <div className="relative h-40 overflow-hidden">
+                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70 z-10"></div>
+                                    <div className="absolute inset-0 flex items-center justify-center z-20">
+                                      {/* Placeholder para GIF - reemplazar con Image cuando tengas los GIFs */}
+                                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                        {subItem.isPrimary ? (
+                                          <Building className="h-12 w-12 text-primary/50" />
+                                        ) : (
+                                          <User className="h-12 w-12 text-primary/50" />
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div
+                                    className={`p-4 ${
+                                      subItem.isPrimary
+                                        ? "bg-primary/5"
+                                        : "bg-white"
+                                    }`}
+                                  >
+                                    <div className="flex items-center mb-2">
+                                      <span
+                                        className={`font-extrabold text-lg ${
+                                          subItem.isPrimary
+                                            ? "text-primary"
+                                            : "text-gray-700"
+                                        }`}
+                                      >
+                                        {subItem.code}
+                                      </span>
+                                      <span className="mx-2 text-gray-300">
+                                        |
+                                      </span>
+                                      <span className="font-medium text-gray-800">
+                                        {subItem.name}
+                                      </span>
+                                    </div>
+                                    <p className="text-xs text-gray-600 line-clamp-2">
+                                      {subItem.description}
+                                    </p>
+
+                                    <div className="mt-3 flex items-center text-xs font-medium text-primary group-hover:underline">
+                                      Ver soluciones
+                                      <ChevronDown className="ml-1 h-3 w-3 rotate-[-90deg]" />
+                                    </div>
+                                  </div>
                                 </Link>
                               ))}
                             </div>
@@ -298,31 +385,77 @@ export function MainNav() {
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="ml-4 mt-2 border-l-2 border-gray-200 pl-4"
+                                transition={{ duration: 0.3 }}
+                                className="mt-2 overflow-hidden"
                               >
-                                {navItem.submenu.map((subItem, subIndex) => (
-                                  <MobileLink
-                                    key={subIndex}
-                                    href={subItem.path}
-                                    onOpenChange={() => setIsOpen(false)}
-                                    className="text-muted-foreground text-base hover:text-primary transition-colors py-2 block"
-                                  >
-                                    {subItem.name}
-                                  </MobileLink>
-                                ))}
+                                <div className="flex flex-col space-y-3">
+                                  {navItem.submenu.map((subItem, subIndex) => (
+                                    <motion.div
+                                      key={subIndex}
+                                      initial={{ opacity: 0, y: 10 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      transition={{ delay: subIndex * 0.1 }}
+                                    >
+                                      <Link
+                                        href={subItem.path}
+                                        onClick={() => setIsOpen(false)}
+                                        className={`block rounded-md overflow-hidden border ${
+                                          subItem.isPrimary
+                                            ? "border-primary/20 bg-primary/5"
+                                            : "border-gray-200"
+                                        }`}
+                                      >
+                                        <div className="h-24 bg-gray-100 relative flex items-center justify-center">
+                                          {subItem.isPrimary ? (
+                                            <Building className="h-10 w-10 text-primary/40" />
+                                          ) : (
+                                            <User className="h-10 w-10 text-primary/40" />
+                                          )}
+                                        </div>
+                                        <div className="p-3">
+                                          <div className="flex items-center mb-1">
+                                            <span
+                                              className={`font-bold text-base ${
+                                                subItem.isPrimary
+                                                  ? "text-primary"
+                                                  : "text-gray-700"
+                                              }`}
+                                            >
+                                              {subItem.code}
+                                            </span>
+                                            <span className="mx-1 text-gray-300">
+                                              |
+                                            </span>
+                                            <span className="font-medium text-sm text-gray-800">
+                                              {subItem.name}
+                                            </span>
+                                          </div>
+                                          <p className="text-xs text-gray-600 line-clamp-2">
+                                            {subItem.description}
+                                          </p>
+                                        </div>
+                                      </Link>
+                                    </motion.div>
+                                  ))}
+                                </div>
                               </motion.div>
                             )}
                           </AnimatePresence>
                         </div>
                       ) : (
-                        <MobileLink
+                        <Link
                           href={navItem.path}
-                          onOpenChange={() => setIsOpen(false)}
+                          onClick={(e) => {
+                            if (isHomePage && navItem.path.startsWith("/#")) {
+                              e.preventDefault();
+                              scrollToSection(navItem.path.replace("/#", ""));
+                            }
+                            setIsOpen(false);
+                          }}
                           className="text-foreground text-lg font-medium hover:text-primary transition-colors py-2 block"
                         >
                           {navItem.name}
-                        </MobileLink>
+                        </Link>
                       )}
                     </motion.div>
                   ))}
